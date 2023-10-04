@@ -1,0 +1,17 @@
+{
+    "show":{
+            "routing":"show configuration routing-instances {port}",
+            "compare":"show | comapre",
+            "set":"show | display set"
+},
+    "configure":{
+        "batch":"configure batch",
+        "exclusive":"configure exclusive",
+        "private":"configure private"
+},
+    
+    "edit":{
+        "class-of-service ":"edit class-of-service  {port}",
+        "routing": "edit routing-instances {}"
+}   
+}
