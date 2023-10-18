@@ -17,6 +17,10 @@ logging.basicConfig(
     format="%(module)s : %(levelname)s:  %(message)s - : %(asctime)s",
 )
 
+def output_to_address_textbox(self, output_entitiy):
+    output = self.address_output_textbox.insert("0.0", output_entitiy)
+    return
+
 def output_to_junipor_textbox(self, output_entitiy):
     output = self.juni_output_textbox.insert("0.0", output_entitiy)
     return 
@@ -25,7 +29,10 @@ def beron_call(self):
     CID = self.CID_Entry.get()
     beorn_get_link = "https://sense.chtrse.com/beorn/v3/topologies?cid="
     #TODO CID needs a clean up from all spaces
-    CID = self.CID_Entry.get()
+    if CID :
+        CID = self.CID_Entry.get()
+    else:
+        output_to_address_textbox(self,"Sorry I Kinda need a CID there bud.")    
     full_link = beorn_get_link + str(CID)
     r = requests.get(full_link)
     data = r.json()
@@ -74,28 +81,20 @@ def beorn_api_caller(self):
 
     if is_multi == False: 
         topologies = data['topology']
-        for topo in topologies:
-            for node in topo['data']['node']:
-                device_dict = {}  # Create a new dictionary for each device
-                for item in node['name']:
-                    if item["name"] == "vendor":
-                        device_dict["vendor"] = item["value"]
-                    if item["name"] == "managementIP":
-                        device_dict["IpAddress"] = item["value"]
-                list_of_dicts.append(device_dict)
-    
     if is_multi == True:
         topologies = data['PRIMARY']['topology']
-        for topo in topologies:
-            for node in topo['data']['node']:
-                device_dict = {}  # Create a new dictionary for each device
-                for item in node['name']:
-                    if item["name"] == "vendor":
-                        device_dict["vendor"] = item["value"]
-                    if item["name"] == "managementIP":
-                        device_dict["IpAddress"] = item["value"]
-                list_of_dicts.append(device_dict)
-
+    for topo in topologies:
+        for node in topo['data']['node']:
+            device_dict = {}  # Create a new dictionary for each device
+            for item in node['name']:
+                if item["name"] == "vendor":
+                    device_dict["vendor"] = item["value"]
+                if item["name"] == "managementIP":
+                    if item["value"] == "DHCP":
+                        device_dict["IpAddress"] = "get fqdn instead DHCP"
+                    device_dict["IpAddress"] = item["value"]
+            list_of_dicts.append(device_dict)
+    print(list_of_dicts)
     return list_of_dicts
     
 

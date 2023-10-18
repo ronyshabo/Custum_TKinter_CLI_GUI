@@ -97,7 +97,7 @@ def device_sorter(self):
             key = commands[drop_menu_key]
             output_to_adva_textbox(self,key)
   
-    output_to_address_textbox(self,ip_list)
+    output_to_address_textbox(self,devices_list)
 
 
 def ssh_connection(self):
